@@ -1,33 +1,67 @@
 package escpos
 
 import (
+	"encoding/xml"
 	"errors"
-
-	"github.com/cloudinn/gokogiri/xml"
-	"github.com/cloudinn/gokogiri/xpath"
 )
 
 var (
 	// ErrBodyElementEmpty is the body element empty error.
 	ErrBodyElementEmpty = errors.New("Body element empty")
-
-	// bodyPath is the xpath selector for the
-	bodyPath = xpath.Compile("*[local-name()='Body']")
 )
 
+// Node represents a parsed XML node with name, attributes and content
+type Node struct {
+	XMLName xml.Name
+	Attrs   []xml.Attr `xml:",any,attr"`
+	Content string     `xml:",chardata"`
+	Nodes   []Node     `xml:",any"`
+}
+
+// Name returns the local name of the XML node
+func (n *Node) Name() string {
+	return n.XMLName.Local
+}
+
+// Attributes returns the attributes as a map
+func (n *Node) Attributes() map[string]string {
+	attrs := make(map[string]string)
+	for _, attr := range n.Attrs {
+		attrs[attr.Name.Local] = attr.Value
+	}
+	return attrs
+}
+
+// SOAP envelope structure for parsing
+type Envelope struct {
+	XMLName xml.Name `xml:"Envelope"`
+	Body    Body     `xml:"Body"`
+}
+
+type Body struct {
+	XMLName xml.Name `xml:"Body"`
+	Content []byte   `xml:",innerxml"`
+}
+
 // getBodyChildren returns the child nodes contained in the Body element in a XML document.
-func getBodyChildren(doc *xml.XmlDocument) ([]xml.Node, error) {
-	// grab nodes
-	nodes, err := doc.Root().Search(bodyPath)
-	if err != nil {
+func getBodyChildren(data []byte) ([]Node, error) {
+	var envelope Envelope
+	if err := xml.Unmarshal(data, &envelope); err != nil {
 		return nil, err
 	}
 
-	// check that the data is present
-	if len(nodes) < 1 || nodes[0].CountChildren() < 1 {
+	if len(envelope.Body.Content) == 0 {
 		return nil, ErrBodyElementEmpty
 	}
 
-	// get body children
-	return nodes[0].FirstChild().Search("./*")
+	var nodes []Node
+	if err := xml.Unmarshal(envelope.Body.Content, &nodes); err != nil {
+		return nil, err
+	}
+
+	if len(nodes) == 0 {
+		return nil, ErrBodyElementEmpty
+	}
+
+	return nodes, nil
 }

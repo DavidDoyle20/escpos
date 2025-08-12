@@ -105,6 +105,11 @@ func (p *Printer) CloseConnection() error {
 	return p.w.(net.Conn).Close()
 }
 
+// Read reads from the printer.
+func (p *Printer) Read(buf []byte) (int, error) {
+	return p.w.Read(buf)
+}
+
 // Write writes buf to printer.
 func (p *Printer) Write(buf []byte) (int, error) {
 	return p.w.Write(buf)
@@ -664,32 +669,32 @@ func (p *Printer) PrintImage(imgPath string) error {
 	return nil
 }
 
-//SetWhiteOnBlack sets the background for the image to white for true or black for false
+// SetWhiteOnBlack sets the background for the image to white for true or black for false
 func (p *Printer) SetWhiteOnBlack(wonbVal bool) {
 	*wonb = wonbVal
 }
 
-//SetFontSizePoint sets font size in points for some selected font
+// SetFontSizePoint sets font size in points for some selected font
 func (p *Printer) SetFontSizePoints(fontSize float64) {
 	*size = fontSize
 }
 
-//SetDPI sets resolution in dots per inch for the image
+// SetDPI sets resolution in dots per inch for the image
 func (p *Printer) SetDPI(resolution float64) {
 	*dpi = resolution
 }
 
-//SetFontFile to choose a certien font to print the image with
+// SetFontFile to choose a certien font to print the image with
 func (p *Printer) SetFontFile(filepath string) {
 	*fontfile = filepath
 }
 
-//SetHinting sets hinting
+// SetHinting sets hinting
 func (p *Printer) SetHinting(hintingVal string) {
 	*hinting = hintingVal
 }
 
-//SetSpacing set spacing between lines in image
+// SetSpacing set spacing between lines in image
 func (p *Printer) SetSpacing(spacingVal float64) {
 	*spacing = spacingVal
 }
@@ -698,7 +703,7 @@ func (p *Printer) SetImageHight(hight int) {
 	*imageHight = hight
 }
 
-//PrintTextImage takes a string convert it to an image and print it
+// PrintTextImage takes a string convert it to an image and print it
 func (p *Printer) PrintTextImage(text string) error {
 	// flag.Parse()
 	// Read the font data.

@@ -170,7 +170,7 @@ func (p *Printer) SetFont(font string) {
 	case "C":
 		f = 2
 	default:
-		log.Println("Invalid font: '%s', defaulting to 'A'", font)
+		log.Printf("Invalid font: '%s', defaulting to 'A'\n", font)
 		f = 0
 	}
 
@@ -190,7 +190,7 @@ func (p *Printer) SetFontSize(width, height byte) {
 		p.width, p.height = width, height
 		p.SendFontSize()
 	} else {
-		log.Println("Invalid font size passed: %d x %d", width, height)
+		log.Printf("Invalid font size passed: %d x %d\n", width, height)
 	}
 }
 
@@ -289,7 +289,7 @@ func (p *Printer) SetAlign(align string) {
 	case "right":
 		a = 2
 	default:
-		log.Println("Invalid alignment: %s", align)
+		log.Printf("Invalid alignment: %s\n", align)
 	}
 	p.w.Write([]byte(fmt.Sprintf("\x1Ba%c", a)))
 
@@ -321,7 +321,7 @@ func (p *Printer) SetLang(lang string) {
 	case "no":
 		l = 9
 	default:
-		log.Println("Invalid language: %s", lang)
+		log.Printf("Invalid language: %s\n", lang)
 	}
 
 	p.w.Write([]byte(fmt.Sprintf("\x1BR%c", l)))

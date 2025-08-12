@@ -54,14 +54,21 @@ func getBodyChildren(data []byte) ([]Node, error) {
 		return nil, ErrBodyElementEmpty
 	}
 
-	var nodes []Node
-	if err := xml.Unmarshal(envelope.Body.Content, &nodes); err != nil {
+	// Parse the body content as a document fragment with multiple root elements
+	bodyContent := "<root>" + string(envelope.Body.Content) + "</root>"
+
+	var wrapper struct {
+		XMLName xml.Name `xml:"root"`
+		Nodes   []Node   `xml:",any"`
+	}
+
+	if err := xml.Unmarshal([]byte(bodyContent), &wrapper); err != nil {
 		return nil, err
 	}
 
-	if len(nodes) == 0 {
+	if len(wrapper.Nodes) == 0 {
 		return nil, ErrBodyElementEmpty
 	}
 
-	return nodes, nil
+	return wrapper.Nodes, nil
 }

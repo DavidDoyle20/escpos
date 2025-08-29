@@ -12,7 +12,7 @@ point-of-sale (POS) system.
 
 Install the package via the following:
 
-    go get -u github.com/cloudinn/escpos
+    go get -u github.com/DavidDoyle20/escpos
 
 ## Example epos-server ##
 
@@ -31,7 +31,7 @@ import (
     "bufio"
     "os"
 
-    "github.com/cloudinn/escpos"
+    "github.com/DavidDoyle20/escpos"
 )
 
 func main() {

@@ -26,7 +26,7 @@ import (
 	"github.com/nfnt/resize"
 	"golang.org/x/image/font"
 
-	"github.com/cloudinn/escpos/raster"
+	"github.com/DavidDoyle20/escpos/raster"
 )
 
 var (

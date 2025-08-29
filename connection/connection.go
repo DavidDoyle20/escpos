@@ -6,11 +6,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/cloudinn/escpos"
+	"github.com/DavidDoyle20/escpos"
 )
 
-//NewConnection creats a connection with a usb printer or a network printer and
-//returns an object to use escops package functions with
+// NewConnection creats a connection with a usb printer or a network printer and
+// returns an object to use escops package functions with
 func NewConnection(connectionType string, connectionHost string) (*escpos.Printer, error) {
 	var f io.ReadWriter
 	var err error
@@ -18,7 +18,7 @@ func NewConnection(connectionType string, connectionHost string) (*escpos.Printe
 	if connectionType == "usb" {
 		f, err = os.OpenFile(connectionHost, os.O_WRONLY, 0)
 	} else if connectionType == "network" {
-		f, err = net.DialTimeout("tcp", connectionHost, 1 * time.Second)
+		f, err = net.DialTimeout("tcp", connectionHost, 1*time.Second)
 	}
 	if err != nil {
 		return nil, err

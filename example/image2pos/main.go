@@ -10,8 +10,8 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 
-	"github.com/cloudinn/escpos"
-	"github.com/cloudinn/escpos/raster"
+	"github.com/DavidDoyle20/escpos"
+	"github.com/DavidDoyle20/escpos/raster"
 )
 
 var (

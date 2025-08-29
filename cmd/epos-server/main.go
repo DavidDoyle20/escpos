@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/cloudinn/escpos"
+	"github.com/DavidDoyle20/escpos"
 )
 
 var (
